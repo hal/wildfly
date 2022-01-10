@@ -15,15 +15,15 @@ The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone
 ## Scripts
 
 `start-wildfly <nn> [<parameters>]` \
-Starts a WildFly standalone server for the specified major version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
+Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
 
 Parameters are passed to the `standalone.sh` script of WildFly. For example, if you want to use another configuration, pass `-c standalone-full.xml`.
 
 `cli-wildfly.sh <nn>` \
-Connects to the CLI of the specified major WildFly version.
+Connects to the CLI of the specified WildFly version.
 
 `hal-wildfly.sh <nn>` \
-Opens HAL in the default browser for the specified major WildFly version.
+Opens HAL in the default browser for the specified WildFly version.
 
 `build-wildfly.sh`, `push-wildfly.sh`, `bulk-*.sh` \
 Scripts to build and push WildFly images. 
