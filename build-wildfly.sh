@@ -67,7 +67,7 @@ parse_params() {
   ARGS=("$@")
   [[ ${#ARGS[@]} -eq 0 ]] && die "Missing WildFly version"
   WF_VERSION=${ARGS[0]}
-  ! [[ $WF_VERSION =~ ^[0-9]{2}$ ]] && die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
+  [[ $WF_VERSION =~ ^[0-9]{2}$ ]] || die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
   [[ "$WF_VERSION" -lt "10" ]] && die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
 
   return 0
