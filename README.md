@@ -14,7 +14,7 @@ The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone
 
 ## Scripts
 
-### `start-wildfly <nn> [<parameters>]`
+### `start-wildfly.sh <nn> [<parameters>]`
 
 Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
 
@@ -30,5 +30,4 @@ Opens HAL in the default browser for the specified WildFly version.
 
 ### Remaining scripts
 
-`build-wildfly.sh`, `push-wildfly.sh`, `bulk-*.sh` \
-Scripts to build and push WildFly images. 
+`build-wildfly.sh`, `push-wildfly.sh` and `bulk-*.sh` are used to build and push WildFly images. 
