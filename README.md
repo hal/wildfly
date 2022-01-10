@@ -1,10 +1,8 @@
-[![Docker Repository on Quay](https://quay.io/repository/halconsole/wildfly/status "Docker Repository on Quay")](https://quay.io/repository/halconsole/wildfly)
-
 # WildFly Development Images
 
-This repository contains scripts to run WildFly [standalone images](https://quay.io/repository/halconsole/wildfly) for all major WildFly version >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
+This repository contains scripts to run WildFly standalone images for all major WildFly version >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
 
-The images are specifically intended for development of WildFly and its components and subsystems. If yopu're looking for Jakarta EE application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
+The images are specifically intended for development of WildFly and its components and subsystems. If you're looking for (Jakarta EE) application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
 
 The images add an admin user `admin:admin`, expose the management interface at port `9990` and add [allowed origins](https://docs.wildfly.org/26/wildscribe/core-service/management/management-interface/http-interface/index.html#attr-allowed-origins) for
 
@@ -16,10 +14,14 @@ The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone
 
 ## Scripts
 
-`start-wildfly <nn>` Starts a WildFly standalone server for the specified major version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
+`start-wildfly <nn>` \
+Starts a WildFly standalone server for the specified major version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
 
-`cli-wildfly.sh <nn>` Connects to the CLI of the specified major WildFly version.
+`cli-wildfly.sh <nn>` \
+Connects to the CLI of the specified major WildFly version.
 
-`hal-wildfly.sh <nn>` Opens HAL in the default browser for the specified major WildFly version.
+`hal-wildfly.sh <nn>` \
+Opens HAL in the default browser for the specified major WildFly version.
 
-`build-wildfly`, `push-wildfly.sh`, `bulk-*.sh` Scripts to build and push WildFly images. 
+`build-wildfly.sh`, `push-wildfly.sh`, `bulk-*.sh` \
+Scripts to build and push WildFly images. 
