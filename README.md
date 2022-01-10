@@ -14,6 +14,14 @@ The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone
 
 ## Scripts
 
+All scripts support the following flags:
+
+```shell
+-h, --help      Prints help information
+-v, --version   Prints version information
+--no-color      Uses plain text output
+```
+
 ### `start-wildfly.sh <nn> [<parameters>]`
 
 Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
