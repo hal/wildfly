@@ -84,5 +84,4 @@ docker run \
   --rm \
   --name=hal-wildfly-$WF_VERSION \
   --publish=99$WF_VERSION:9990 \
-  $TAG:$RELEASE \
-  ${WF_PARAM-}
+  $TAG:$RELEASE ${WF_PARAM-}

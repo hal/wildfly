@@ -4,8 +4,13 @@ set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 VERSION=0.0.1
+WF_CORE_VERSION=18.0.1.Final
+CLI_JAR_URL=https://repo1.maven.org/maven2/org/wildfly/core/wildfly-cli/$WF_CORE_VERSION/wildfly-cli-$WF_CORE_VERSION-client.jar
+CLI_XML_URL=https://raw.githubusercontent.com/wildfly/wildfly-core/main/core-feature-pack/common/src/main/resources/content/bin/jboss-cli.xml
+
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 readonly script_dir
+cd "${script_dir}"
 
 usage() {
   cat <<EOF
@@ -81,10 +86,11 @@ setup_colors
 RELEASE=$WF_VERSION.0.0.Final
 
 [[ -x "$(command -v java)" ]] || die "Java not found"
+[[ -f "${TMPDIR}/cli.xml" ]] || curl -s "${CLI_XML_URL}" --output "${TMPDIR}/cli.xml"
+[[ -f "${TMPDIR}/cli.jar" ]] || curl -s "${CLI_JAR_URL}" --output "${TMPDIR}/cli.jar"
 msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI"
-java -Djboss.cli.config="${script_dir}/jboss-cli.xml" -jar "${script_dir}/jboss-cli-client.jar" \
+java -Djboss.cli.config="${TMPDIR}/cli.xml" -jar "${TMPDIR}/cli.jar" \
   --user=admin \
   --password=admin \
   --controller=localhost:99$WF_VERSION \
-  --connect \
-  ${CLI_PARAM-}
+  --connect ${CLI_PARAM-}
