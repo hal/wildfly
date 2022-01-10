@@ -4,8 +4,10 @@ set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 VERSION=0.0.1
+
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 readonly script_dir
+cd "${script_dir}"
 
 usage() {
   cat <<EOF
@@ -86,8 +88,8 @@ if [[ "$WF_VERSION" -lt "24" ]]; then
 fi
 
 docker build \
-  --build-arg WILDFLY_RELEASE="$RELEASE" \
-  --build-arg DOCKER_BASE=$BASE \
+  --build-arg WILDFLY_RELEASE="${RELEASE}" \
+  --build-arg DOCKER_BASE="${BASE}" \
   --file Dockerfile \
-  --tag $TAG:$RELEASE \
-  "$script_dir"
+  --tag "${TAG}:${RELEASE}" \
+  .

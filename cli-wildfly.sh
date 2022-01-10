@@ -92,5 +92,5 @@ msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI"
 java -Djboss.cli.config="${TMPDIR}/cli.xml" -jar "${TMPDIR}/cli.jar" \
   --user=admin \
   --password=admin \
-  --controller=localhost:99$WF_VERSION \
+  --controller="localhost:99${WF_VERSION}" \
   --connect ${CLI_PARAM-}
