@@ -1,8 +1,10 @@
 [![Docker Repository on Quay](https://quay.io/repository/halconsole/wildfly/status "Docker Repository on Quay")](https://quay.io/repository/halconsole/wildfly)
 
-# WildFly Images
+# WildFly Development Images
 
-This repository contains scripts to run WildFly [standalone images](https://quay.io/repository/halconsole/wildfly) for all major WildFly version >= 10.0.0.Final. The images are specifically intended for development of WildFly and its components and subsystems. If yopu're looking for Jakarta EE application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
+This repository contains scripts to run WildFly [standalone images](https://quay.io/repository/halconsole/wildfly) for all major WildFly version >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
+
+The images are specifically intended for development of WildFly and its components and subsystems. If yopu're looking for Jakarta EE application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
 
 The images add an admin user `admin:admin`, expose the management interface at port `9990` and add [allowed origins](https://docs.wildfly.org/26/wildscribe/core-service/management/management-interface/http-interface/index.html#attr-allowed-origins) for
 
