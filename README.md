@@ -14,7 +14,7 @@ The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone
 
 ## Scripts
 
-All scripts support the following flags:
+Most scripts require the major WildFly version as a two digit number: `nn` >= 10. All scripts support the following flags:
 
 ```shell
 -h, --help      Prints help information
@@ -24,13 +24,23 @@ All scripts support the following flags:
 
 ### `start-wildfly.sh <nn> [<parameters>]`
 
-Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. You can safely run multiple different versions at the same time without port conflicts.
+Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. Parameters are passed to the `standalone.sh` script of WildFly. 
 
-Parameters are passed to the `standalone.sh` script of WildFly. For example, if you want to use another configuration, pass `-c standalone-full.xml`.
+Example:
 
-### `cli-wildfly.sh <nn>`
+```shell
+start-wildfly.sh 26 -c standalone-microprofile.xml
+```
 
-Connects to the CLI of the specified WildFly version.
+### `cli-wildfly.sh <nn> [<parameters>]`
+
+Connects to the CLI of the specified WildFly version. Parameters are passed to main class of `wildfly-cli-client.jar`. 
+
+Example:
+
+```shell
+cli-wildfly.sh 26 --file=commands.txt
+```
 
 ### `hal-wildfly.sh <nn>`
 
