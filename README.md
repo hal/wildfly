@@ -6,7 +6,8 @@ The images are specifically intended for development of WildFly and its componen
 
 The images add an admin user `admin:admin`, expose the management interface at port `9990` and add [allowed origins](https://docs.wildfly.org/26/wildscribe/core-service/management/management-interface/http-interface/index.html#attr-allowed-origins) for
 
-- http://localhost:8888
+- http://localhost:8888 (used by GWT devmode)
+- http://localhost:9090 (used by HAL standalone)
 - http://hal.github.io
 - https://hal.github.io
 
