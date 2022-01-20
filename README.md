@@ -1,6 +1,6 @@
 # WildFly Development Images
 
-This repository contains scripts to run WildFly standalone images for all major WildFly version >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
+This repository contains scripts to build and run WildFly standalone images for all major WildFly version >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
 
 The images are specifically intended for development of WildFly and its components and subsystems. If you're looking for (Jakarta EE) application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
 
@@ -11,6 +11,8 @@ The images add an admin user `admin:admin`, expose the management interface at p
 - https://hal.github.io
 
 The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone mode](https://hal.github.io/documentation/get-started/#standalone-mode) and connect to the running WildFly instances.
+
+In addition the images contain a `standalone-<config>-insecure.xml`  configuration for each `standalone-<config>.xml` variant. These configurations disable the authentication of the management interface and are used in the HAL testsuite to run automatic Selenium tests w/o worrying about browser authentication popups getting in the way. 
 
 ## Scripts
 
@@ -30,6 +32,7 @@ Example:
 
 ```shell
 start-wildfly.sh 26 -c standalone-microprofile.xml
+start-wildfly.sh 27 -c standalone-insecure.xml
 ```
 
 ### `cli-wildfly.sh <nn> [<parameters>]`
