@@ -84,7 +84,7 @@ BASE=quay.io/wildfly/wildfly
 # Starting with WildFly 24, we use quay.io
 # for the WildFly images.
 if [[ "$WF_VERSION" -lt "24" ]]; then
-  BASE=jboss/wildfly
+  BASE=docker.io/jboss/wildfly
 fi
 
 docker build \
