@@ -15,6 +15,7 @@ USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version>
 
 FLAGS:
+    -p, --podman    Use podman instead of docker
     -h, --help      Prints help information
     -v, --version   Prints version information
     --no-color      Uses plain text output
@@ -55,8 +56,10 @@ version() {
 }
 
 parse_params() {
+  DOCKER=docker
   while :; do
     case "${1-}" in
+    -p | --podman) DOCKER=podman ;;
     -h | --help) usage ;;
     -v | --version) version ;;
     --no-color) NO_COLOR=1 ;;
@@ -87,7 +90,7 @@ if [[ "$WF_VERSION" -lt "24" ]]; then
   BASE=docker.io/jboss/wildfly
 fi
 
-docker build \
+${DOCKER} build \
   --build-arg WILDFLY_RELEASE="${RELEASE}" \
   --build-arg DOCKER_BASE="${BASE}" \
   --file Dockerfile \

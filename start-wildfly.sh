@@ -11,6 +11,7 @@ USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version> [<parameters>]
 
 FLAGS:
+    -p, --podman    Use podman instead of docker
     -h, --help      Prints help information
     -v, --version   Prints version information
     --no-color      Uses plain text output
@@ -52,8 +53,10 @@ version() {
 }
 
 parse_params() {
+  DOCKER=docker
   while :; do
     case "${1-}" in
+    -p | --podman) DOCKER=podman ;;
     -h | --help) usage ;;
     -v | --version) version ;;
     --no-color) NO_COLOR=1 ;;
@@ -80,7 +83,7 @@ RELEASE=$WF_VERSION.0.0.Final
 TAG=quay.io/halconsole/wildfly
 
 msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT}"
-docker run \
+${DOCKER} run \
   --rm \
   --name="hal-wildfly-${WF_VERSION}" \
   --publish="99${WF_VERSION}:9990" \
