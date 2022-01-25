@@ -8,6 +8,7 @@ The images add an admin user `admin:admin`, expose the management interface at p
 
 - http://localhost:8888 (used by GWT devmode)
 - http://localhost:9090 (used by HAL standalone)
+- http://hal:9090 (used by the HAL test suite)
 - http://hal.github.io
 - https://hal.github.io
 
