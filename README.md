@@ -9,12 +9,12 @@ The images add an admin user `admin:admin`, expose the management interface at p
 - http://localhost:8888 (used by GWT devmode)
 - http://localhost:9090 (used by HAL standalone)
 - http://hal:9090 (used by the HAL test suite)
-- http://hal.github.io
-- https://hal.github.io
+- http://hal.github.io (latest online console)
+- https://hal.github.io (latest online console)
 
 The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone mode](https://hal.github.io/documentation/get-started/#standalone-mode) and connect to the running WildFly instances.
 
-In addition the images contain a `standalone-<config>-insecure.xml`  configuration for each `standalone-<config>.xml` variant. These configurations disable the authentication of the management interface and are used in the HAL testsuite to run automatic Selenium tests w/o worrying about browser authentication popups getting in the way. 
+In addition the images contain a `standalone-<config>-insecure.xml`  configuration for each `standalone-<config>.xml` variant. These configurations disable the authentication of the management interface and are used by the HAL testsuite to run automatic Selenium tests w/o worrying about browser authentication popups getting in the way. 
 
 ## Scripts
 
