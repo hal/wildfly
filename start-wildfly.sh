@@ -86,5 +86,6 @@ msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT}"
 ${DOCKER} run \
   --rm \
   --name="hal-wildfly-${WF_VERSION}" \
+  --publish="80${WF_VERSION}:8080" \
   --publish="99${WF_VERSION}:9990" \
   "${TAG}:${RELEASE}" ${WF_PARAM-}

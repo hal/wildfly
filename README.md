@@ -4,7 +4,7 @@ This repository contains scripts to build and run WildFly standalone images for 
 
 The images are specifically intended for development of WildFly and its components and subsystems. If you're looking for (Jakarta EE) application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
 
-The images add an admin user `admin:admin`, expose the management interface at port `9990` and add [allowed origins](https://docs.wildfly.org/26/wildscribe/core-service/management/management-interface/http-interface/index.html#attr-allowed-origins) for
+The images add an admin user `admin:admin` and add [allowed origins](https://docs.wildfly.org/26/wildscribe/core-service/management/management-interface/http-interface/index.html#attr-allowed-origins) for
 
 - http://localhost:8888 (used by GWT devmode)
 - http://localhost:9090 (used by HAL standalone)
@@ -28,7 +28,7 @@ Most scripts require the major WildFly version as a two digit number: `nn` >= 10
 
 ### `start-wildfly.sh <nn> [<parameters>]`
 
-Starts a WildFly standalone server for the specified version. The management port `9990` is published as `99<nn>`. Parameters are passed to the `standalone.sh` script of WildFly. 
+Starts a WildFly standalone server for the specified version. The HTTP port `8080` is published as `80<nn>` and the management port `9990` is published as `99<nn>`. Parameters are passed to the `standalone.sh` script of WildFly. 
 
 Example:
 
