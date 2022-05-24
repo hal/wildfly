@@ -92,16 +92,16 @@ parse_params "$@"
 setup_colors
 
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
-PORT_SUFFIX=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "${WF_MAJOR_VERSION}" || echo "${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
+MGMT_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "99${WF_MAJOR_VERSION}" || echo "9${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 
 [[ -x "$(command -v java)" ]] || die "Java not found"
 [[ -f "${TMPDIR}/cli.xml" ]] || curl -s "${CLI_XML_URL}" --output "${TMPDIR}/cli.xml"
 [[ -f "${TMPDIR}/cli.jar" ]] || curl -s "${CLI_JAR_URL}" --output "${TMPDIR}/cli.jar"
 
-msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI on port ${YELLOW}99${PORT_SUFFIX}"
+msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI on port ${YELLOW}${MGMT_PORT}"
 
 java -Djboss.cli.config="${TMPDIR}/cli.xml" -jar "${TMPDIR}/cli.jar" \
   --user=admin \
   --password=admin \
-  --controller="localhost:99${PORT_SUFFIX}" \
+  --controller="localhost:${MGMT_PORT}" \
   --connect "${CLI_PARAM-}"

@@ -89,15 +89,16 @@ setup_colors
 
 TAG=quay.io/halconsole/wildfly
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
-PORT_SUFFIX=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "${WF_MAJOR_VERSION}" || echo "${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
+HTTP_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "80${WF_MAJOR_VERSION}" || echo "8${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
+MGMT_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "99${WF_MAJOR_VERSION}" || echo "9${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 
 msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT} using"
-msg "    ${YELLOW}80${PORT_SUFFIX}${NOFORMAT} for HTTP endpoint and"
-msg "    ${YELLOW}99${PORT_SUFFIX}${NOFORMAT} for management endpoint"
+msg "    ${YELLOW}${HTTP_PORT}${NOFORMAT} for HTTP endpoint and"
+msg "    ${YELLOW}${MGMT_PORT}${NOFORMAT} for management endpoint"
 
 ${DOCKER} run \
   --rm \
   --name="hal-wildfly-${WF_VERSION}" \
-  --publish="80${PORT_SUFFIX}:8080" \
-  --publish="99${PORT_SUFFIX}:9990" \
+  --publish="${HTTP_PORT}:8080" \
+  --publish="${MGMT_PORT}:9990" \
   "${TAG}:${RELEASE}" "${WF_PARAM-}"
