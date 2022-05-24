@@ -96,9 +96,10 @@ msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT} using"
 msg "    ${YELLOW}${HTTP_PORT}${NOFORMAT} for HTTP endpoint and"
 msg "    ${YELLOW}${MGMT_PORT}${NOFORMAT} for management endpoint"
 
+# Please don't put double quotes around ${WF_PARAM-}
 ${DOCKER} run \
   --rm \
   --name="hal-wildfly-${WF_VERSION}" \
   --publish="${HTTP_PORT}:8080" \
   --publish="${MGMT_PORT}:9990" \
-  "${TAG}:${RELEASE}" "${WF_PARAM-}"
+  "${TAG}:${RELEASE}" ${WF_PARAM-}

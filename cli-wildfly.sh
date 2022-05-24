@@ -100,8 +100,9 @@ MGMT_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "99${WF_MAJOR_VERSION}" ||
 
 msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI on port ${YELLOW}${MGMT_PORT}"
 
+# Please don't put double quotes around ${CLI_PARAM-}
 java -Djboss.cli.config="${TMPDIR}/cli.xml" -jar "${TMPDIR}/cli.jar" \
   --user=admin \
   --password=admin \
   --controller="localhost:${MGMT_PORT}" \
-  --connect "${CLI_PARAM-}"
+  --connect ${CLI_PARAM-}
