@@ -82,7 +82,7 @@ parse_params "$@"
 setup_colors
 
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
-HTTP_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "80${WF_MAJOR_VERSION}" || echo "8${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
+MGMT_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "99${WF_MAJOR_VERSION}" || echo "9${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 BROWSER=unknown
 if [[ $OSTYPE == "darwin"* ]]; then
   BROWSER=open
@@ -94,5 +94,5 @@ else
   die "No browser found."
 fi
 
-msg "Open WildFly ${CYAN}${RELEASE}${NOFORMAT} Management Console on port ${YELLOW}${HTTP_PORT}"
-$BROWSER "http://admin:admin@localhost:${HTTP_PORT}"
+msg "Open WildFly ${CYAN}${RELEASE}${NOFORMAT} Management Console on port ${YELLOW}${MGMT_PORT}"
+$BROWSER "http://admin:admin@localhost:${MGMT_PORT}"
