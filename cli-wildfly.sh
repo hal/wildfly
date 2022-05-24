@@ -14,7 +14,7 @@ cd "${script_dir}"
 
 usage() {
   cat <<EOF
-USAGE: 
+USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version> [<parameters>]
 
 FLAGS:
@@ -22,8 +22,8 @@ FLAGS:
     -v, --version   Prints version information
     --no-color      Uses plain text output
 
-ARGS: 
-    <version>       WildFly major version >=10 as [nn] 
+ARGS:
+    <version>       WildFly version >=10 as <major>[.<minor>]
     <parameters>    Parameters passed to jboss-cli.sh
 EOF
   exit
@@ -54,7 +54,7 @@ die() {
 }
 
 version() {
-  msg "${BASH_SOURCE[0]} $VERSION"  
+  msg "${BASH_SOURCE[0]} $VERSION"
   exit 0
 }
 
@@ -72,9 +72,17 @@ parse_params() {
 
   ARGS=("$@")
   [[ ${#ARGS[@]} -eq 0 ]] && die "Missing WildFly version"
+
   WF_VERSION=${ARGS[0]}
-  [[ $WF_VERSION =~ ^[0-9]{2}$ ]] || die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
-  [[ "$WF_VERSION" -lt "10" ]] && die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
+  [[ $WF_VERSION =~ ^([0-9]{2})(\.([0-9]{1}))?$ ]] || die "Illegal WildFly version: '$WF_VERSION'. Please use <major>[.<minor>] with mandatory major >= 10 and optional minor >= 0 and <= 9"
+
+  WF_MAJOR_VERSION=${BASH_REMATCH[1]}
+  [[ "${WF_MAJOR_VERSION}" -lt "10" ]] && die "Illegal major WildFly version: '$WF_MAJOR_VERSION'. Must be >= 10"
+
+  WF_MINOR_VERSION=${BASH_REMATCH[3]:-0}
+  [[ "${WF_MINOR_VERSION}" -lt "0" ]] && die "Illegal minor WildFly version: '$WF_MINOR_VERSION'. Must be >= 0"
+  [[ "${WF_MINOR_VERSION}" -gt "9" ]] && die "Illegal major WildFly version: '$WF_MINOR_VERSION'. Must be <= 9"
+
   shift
   CLI_PARAM="$*"
   return 0
@@ -83,14 +91,17 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-RELEASE=$WF_VERSION.0.0.Final
+RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
+PORT_SUFFIX=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "${WF_MAJOR_VERSION}" || echo "${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 
 [[ -x "$(command -v java)" ]] || die "Java not found"
 [[ -f "${TMPDIR}/cli.xml" ]] || curl -s "${CLI_XML_URL}" --output "${TMPDIR}/cli.xml"
 [[ -f "${TMPDIR}/cli.jar" ]] || curl -s "${CLI_JAR_URL}" --output "${TMPDIR}/cli.jar"
-msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI"
+
+msg "Connect to WildFly ${CYAN}${RELEASE}${NOFORMAT} CLI on port ${YELLOW}99${PORT_SUFFIX}"
+
 java -Djboss.cli.config="${TMPDIR}/cli.xml" -jar "${TMPDIR}/cli.jar" \
   --user=admin \
   --password=admin \
-  --controller="localhost:99${WF_VERSION}" \
-  --connect ${CLI_PARAM-}
+  --controller="localhost:99${PORT_SUFFIX}" \
+  --connect "${CLI_PARAM-}"

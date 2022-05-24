@@ -7,7 +7,7 @@ VERSION=0.0.1
 
 usage() {
   cat <<EOF
-USAGE: 
+USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <versions>
 
 FLAGS:
@@ -15,8 +15,8 @@ FLAGS:
     -v, --version   Prints version information
     --no-color      Uses plain text output
 
-ARGS: 
-    <versions>      WildFly major versions >=10 as [nn] 
+ARGS:
+    <versions>      WildFly versions >=10 as <major>[.<minor>]
 EOF
   exit
 }
@@ -46,7 +46,7 @@ die() {
 }
 
 version() {
-  msg "${BASH_SOURCE[0]} $VERSION"  
+  msg "${BASH_SOURCE[0]} $VERSION"
   exit 0
 }
 
@@ -72,5 +72,5 @@ setup_colors
 
 for WF_VERSION in "${WF_VERSIONS[@]}"
 do
-    ./build-wildfly.sh $WF_VERSION
+    ./build-wildfly.sh "$WF_VERSION"
 done

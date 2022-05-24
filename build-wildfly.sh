@@ -11,7 +11,7 @@ cd "${script_dir}"
 
 usage() {
   cat <<EOF
-USAGE: 
+USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version>
 
 FLAGS:
@@ -20,8 +20,8 @@ FLAGS:
     -v, --version   Prints version information
     --no-color      Uses plain text output
 
-ARGS: 
-    <version>       WildFly major version >=10 as [nn] 
+ARGS:
+    <version>       WildFly version >=10 as <major>[.<minor>]
 EOF
   exit
 }
@@ -51,7 +51,7 @@ die() {
 }
 
 version() {
-  msg "${BASH_SOURCE[0]} $VERSION"  
+  msg "${BASH_SOURCE[0]} $VERSION"
   exit 0
 }
 
@@ -71,9 +71,16 @@ parse_params() {
 
   ARGS=("$@")
   [[ ${#ARGS[@]} -eq 0 ]] && die "Missing WildFly version"
+
   WF_VERSION=${ARGS[0]}
-  [[ $WF_VERSION =~ ^[0-9]{2}$ ]] || die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
-  [[ "$WF_VERSION" -lt "10" ]] && die "Illegal WildFly version: $WF_VERSION. Please use a two digit version >= 10"
+  [[ $WF_VERSION =~ ^([0-9]{2})(\.([0-9]{1}))?$ ]] || die "Illegal WildFly version: '$WF_VERSION'. Please use <major>[.<minor>] with mandatory major >= 10 and optional minor >= 0 and <= 9"
+
+  WF_MAJOR_VERSION=${BASH_REMATCH[1]}
+  [[ "${WF_MAJOR_VERSION}" -lt "10" ]] && die "Illegal major WildFly version: '$WF_MAJOR_VERSION'. Must be >= 10"
+
+  WF_MINOR_VERSION=${BASH_REMATCH[3]:-0}
+  [[ "${WF_MINOR_VERSION}" -lt "0" ]] && die "Illegal minor WildFly version: '$WF_MINOR_VERSION'. Must be >= 0"
+  [[ "${WF_MINOR_VERSION}" -gt "9" ]] && die "Illegal major WildFly version: '$WF_MINOR_VERSION'. Must be <= 9"
 
   return 0
 }
@@ -81,12 +88,12 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-RELEASE=$WF_VERSION.0.0.Final
-TAG=quay.io/halconsole/wildfly
 BASE=quay.io/wildfly/wildfly
+TAG=quay.io/halconsole/wildfly
+RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
 # Starting with WildFly 24, we use quay.io
 # for the WildFly images.
-if [[ "$WF_VERSION" -lt "24" ]]; then
+if [[ "$WF_MAJOR_VERSION" -lt "24" ]]; then
   BASE=docker.io/jboss/wildfly
 fi
 
