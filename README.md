@@ -31,11 +31,11 @@ Most scripts require a WildFly version as `<major>[.<minor>]` with `major` being
 The WildFly standalone image publishes the HTTP and management endpoints. The port mappings depend on the WildFly version and whether only a major version `mm` or an additional minor version `n` is specified:
 
 - major version only
-  - 8080 → 80<mm>
-  - 9900 → 99<mm>
+  - 8080 → 80`<mm>`
+  - 9900 → 99`<mm>`
 - major and minor version
-  - 8080 → 8<mm><n>
-  - 9900 → 9<mm><n>
+  - 8080 → 8`<mm><n>`
+  - 9900 → 9`<mm><n>`
 
 So for WildFly 27, the port mappings are 8027 and 9927 whereas for WildFly 26.1, the port mappings are 8261 and 9261.   
 
