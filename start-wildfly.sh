@@ -11,6 +11,7 @@ USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version> [<parameters>]
 
 FLAGS:
+    -d, --domain    Start in domain mode
     -p, --podman    Use podman instead of docker
     -h, --help      Prints help information
     -v, --version   Prints version information
@@ -18,7 +19,7 @@ FLAGS:
 
 ARGS:
     <version>       WildFly version >=10 as <major>[.<minor>]
-    <parameters>    Parameters passed to standalone.sh
+    <parameters>    Parameters passed to standalone.sh | domain.sh
 EOF
   exit
 }
@@ -53,9 +54,11 @@ version() {
 }
 
 parse_params() {
+  MODE=standalone
   DOCKER=docker
   while :; do
     case "${1-}" in
+    -d | --domain) MODE=domain ;;
     -p | --podman) DOCKER=podman ;;
     -h | --help) usage ;;
     -v | --version) version ;;
@@ -88,18 +91,30 @@ parse_params "$@"
 setup_colors
 
 TAG=quay.io/halconsole/wildfly
+TAG_DOMAIN=quay.io/halconsole/wildfly-domain
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
 HTTP_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "80${WF_MAJOR_VERSION}" || echo "8${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 MGMT_PORT=$([[ "$WF_MINOR_VERSION" -eq "0" ]] && echo "99${WF_MAJOR_VERSION}" || echo "9${WF_MAJOR_VERSION}${WF_MINOR_VERSION}")
 
-msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT} using"
+msg "Start WildFly ${CYAN}${RELEASE}${NOFORMAT} in ${CYAN}${MODE}${NOFORMAT} mode using"
 msg "    ${YELLOW}${HTTP_PORT}${NOFORMAT} for HTTP endpoint and"
 msg "    ${YELLOW}${MGMT_PORT}${NOFORMAT} for management endpoint"
 
 # Please don't put double quotes around ${WF_PARAM-}
-${DOCKER} run \
-  --rm \
-  --name="hal-wildfly-${WF_VERSION}" \
-  --publish="${HTTP_PORT}:8080" \
-  --publish="${MGMT_PORT}:9990" \
-  "${TAG}:${RELEASE}" ${WF_PARAM-}
+if [[ "${MODE}" == "standalone" ]]; then
+  ${DOCKER} run \
+    --rm \
+    --name="hal-wildfly-${WF_VERSION}" \
+    --publish="${HTTP_PORT}:8080" \
+    --publish="${MGMT_PORT}:9990" \
+    "${TAG}:${RELEASE}" ${WF_PARAM-}
+elif [[ "${MODE}" == "domain" ]]; then
+  ${DOCKER} run \
+    --rm \
+    --name="hal-wildfly-domain-${WF_VERSION}" \
+    --publish="${HTTP_PORT}:8080" \
+    --publish="${MGMT_PORT}:9990" \
+    "${TAG_DOMAIN}:${RELEASE}" ${WF_PARAM-}
+else
+  die "No operation mode (standalone|domain) given!"
+fi

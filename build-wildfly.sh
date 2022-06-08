@@ -90,6 +90,7 @@ setup_colors
 
 BASE=quay.io/wildfly/wildfly
 TAG=quay.io/halconsole/wildfly
+TAG_DOMAIN=quay.io/halconsole/wildfly-domain
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
 # Starting with WildFly 24, we use quay.io
 # for the WildFly images.
@@ -97,9 +98,19 @@ if [[ "$WF_MAJOR_VERSION" -lt "24" ]]; then
   BASE=docker.io/jboss/wildfly
 fi
 
+msg "Build WildFly ${CYAN}standalone${NOFORMAT} image for ${YELLOW}${RELEASE}${NOFORMAT}"
 ${DOCKER} build \
   --build-arg WILDFLY_RELEASE="${RELEASE}" \
   --build-arg DOCKER_BASE="${BASE}" \
   --file Dockerfile \
   --tag "${TAG}:${RELEASE}" \
+  .
+
+msg
+msg "Build WildFly ${CYAN}domain${NOFORMAT} image for ${YELLOW}${RELEASE}${NOFORMAT}"
+${DOCKER} build \
+  --build-arg WILDFLY_RELEASE="${RELEASE}" \
+  --build-arg DOCKER_BASE="${BASE}" \
+  --file Dockerfile-domain \
+  --tag "${TAG_DOMAIN}:${RELEASE}" \
   .

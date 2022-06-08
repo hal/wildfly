@@ -85,8 +85,10 @@ parse_params "$@"
 setup_colors
 
 TAG=quay.io/halconsole/wildfly
+TAG_DOMAIN=quay.io/halconsole/wildfly-domain
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
 
 # Requires a valid configuration in ~/.docker/config.json
 ${DOCKER} login quay.io
 ${DOCKER} push "${TAG}:${RELEASE}"
+${DOCKER} push "${TAG_DOMAIN}:${RELEASE}"
