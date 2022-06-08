@@ -41,11 +41,12 @@ So for WildFly 27, the port mappings are 8027 and 9927 whereas for WildFly 26.1,
 
 ### `start-wildfly.sh <version> [<parameters>]`
 
-Starts a WildFly standalone server for the specified version. Parameters are passed to the `standalone.sh` script of WildFly. 
+Starts a WildFly standalone server for the specified version. Parameters are passed to the `standalone.sh` script of WildFly. Use `-d` or `--domain` to start WildFly in domain mode. The domain mode uses a modified default configuration using `auto-start=false` for all servers. Parameters are passed to the `domain.sh` script  
 
 Example:
 
 ```shell
+start-wildfly.sh --domain 19
 start-wildfly.sh 26.1 -c standalone-microprofile.xml
 start-wildfly.sh 27 -c standalone-insecure.xml
 ```
