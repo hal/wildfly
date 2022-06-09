@@ -11,6 +11,7 @@ USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version>
 
 FLAGS:
+    -l, --latest    Use 'latest' for tagging the image
     -p, --podman    Use podman instead of docker
     -h, --help      Prints help information
     -v, --version   Prints version information
@@ -52,9 +53,11 @@ version() {
 }
 
 parse_params() {
+  LATEST=false
   DOCKER=docker
   while :; do
     case "${1-}" in
+    -l | --latest) LATEST=true ;;
     -p | --podman) DOCKER=podman ;;
     -h | --help) usage ;;
     -v | --version) version ;;
@@ -87,6 +90,9 @@ setup_colors
 TAG=quay.io/halconsole/wildfly
 TAG_DOMAIN=quay.io/halconsole/wildfly-domain
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
+if [[ "$LATEST" == "true" ]]; then
+  RELEASE=latest
+fi
 
 # Requires a valid configuration in ~/.docker/config.json
 ${DOCKER} login quay.io

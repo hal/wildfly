@@ -15,6 +15,7 @@ USAGE:
     $(basename "${BASH_SOURCE[0]}") [FLAGS] <version>
 
 FLAGS:
+    -l, --latest    Use 'latest' for tagging the image
     -p, --podman    Use podman instead of docker
     -h, --help      Prints help information
     -v, --version   Prints version information
@@ -56,9 +57,11 @@ version() {
 }
 
 parse_params() {
+  LATEST=false
   DOCKER=docker
   while :; do
     case "${1-}" in
+    -l | --latest) LATEST=true ;;
     -p | --podman) DOCKER=podman ;;
     -h | --help) usage ;;
     -v | --version) version ;;
@@ -92,6 +95,12 @@ BASE=quay.io/wildfly/wildfly
 TAG=quay.io/halconsole/wildfly
 TAG_DOMAIN=quay.io/halconsole/wildfly-domain
 RELEASE=$WF_MAJOR_VERSION.$WF_MINOR_VERSION.0.Final
+TAG_VERSION=$RELEASE
+
+if [[ "$LATEST" == "true" ]]; then
+  TAG_VERSION=latest
+fi
+
 # Starting with WildFly 24, we use quay.io
 # for the WildFly images.
 if [[ "$WF_MAJOR_VERSION" -lt "24" ]]; then
@@ -103,7 +112,7 @@ ${DOCKER} build \
   --build-arg WILDFLY_RELEASE="${RELEASE}" \
   --build-arg DOCKER_BASE="${BASE}" \
   --file Dockerfile \
-  --tag "${TAG}:${RELEASE}" \
+  --tag "${TAG}:${TAG_VERSION}" \
   .
 
 msg
@@ -112,5 +121,5 @@ ${DOCKER} build \
   --build-arg WILDFLY_RELEASE="${RELEASE}" \
   --build-arg DOCKER_BASE="${BASE}" \
   --file Dockerfile-domain \
-  --tag "${TAG_DOMAIN}:${RELEASE}" \
+  --tag "${TAG_DOMAIN}:${TAG_VERSION}" \
   .
