@@ -1,6 +1,6 @@
 # WildFly Images
 
-This repository contains scripts to build and run WildFly standalone images for all WildFly versions >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
+This repository contains scripts to build and run WildFly images for all WildFly versions >= 10.0.0.Final. The images build on top of [quay.io/wildfly/wildfly](https://quay.io/repository/wildfly/wildfly) and are hosted at [quay.io/halconsole/wildfly](https://quay.io/repository/halconsole/wildfly). 
 
 The images are specifically intended for the development and testing of WildFly and its components and subsystems. If you're looking for (Jakarta EE) application development with WildFly, the official [WildFly images](https://quay.io/organization/wildfly) might be a better match. 
 
@@ -14,11 +14,11 @@ The images add an admin user `admin:admin` and [allowed origins](https://docs.wi
 
 The allowed origins are meant to run [HAL](https://hal.github.io) in [standalone mode](https://hal.github.io/documentation/get-started/#standalone-mode) and connect to the running WildFly instances.
 
-In addition, the images contain a `standalone-<config>-insecure.xml`  configuration for each `standalone-<config>.xml` variant. These configurations disable the authentication of the management interface and are used by the HAL test suite to run automatic Selenium tests w/o worrying about browser authentication popups getting in the way. 
+In addition, the images contain a `standalone-<config>-insecure.xml`  configuration for each `standalone-<config>.xml` variant and a `host-insecure.xml` configuration. These configurations disable the authentication of the management interface and are used by the HAL [test suite](https://github.com/hal/manatoko) to run automatic Selenium tests w/o worrying about browser authentication popups getting in the way. 
 
 ## Scripts
 
-Most scripts require a WildFly version as `<major>[.<minor>]` with `major` being mandatory >= 10 and `minor` being optional >= 0 and <= 9 . All scripts support the following flags:
+Most scripts require a WildFly version as `<major>[.<minor>]` with `major` being mandatory >= 10 and `minor` being optional >= 0 and <= 9. All scripts support the following flags:
 
 ```shell
 -h, --help      Prints help information
@@ -28,7 +28,7 @@ Most scripts require a WildFly version as `<major>[.<minor>]` with `major` being
 
 ### Port Mappings
 
-The WildFly standalone image publishes the HTTP and management endpoints. The port mappings depend on the WildFly version and whether only a major version `mm` or an additional minor version `n` is specified:
+The WildFly image publishes the HTTP and management endpoints. The port mappings depend on the WildFly version and whether only a major version `mm` or an additional minor version `n` is specified:
 
 - major version only
   - 8080 → 80`<mm>`
@@ -41,7 +41,7 @@ So for WildFly 27, the port mappings are 8027 and 9927 whereas for WildFly 26.1,
 
 ### `start-wildfly.sh <version> [<parameters>]`
 
-Starts a WildFly standalone server for the specified version. Parameters are passed to the `standalone.sh` script of WildFly. Use `-d` or `--domain` to start WildFly in domain mode. The domain mode uses a modified default configuration using `auto-start=false` for all servers. Parameters are passed to the `domain.sh` script  
+Starts a WildFly standalone server for the specified version. Parameters are passed to the `standalone.sh` script of WildFly. Use `-d` or `--domain` to start WildFly in domain mode. The domain mode uses a modified default configuration using `auto-start=false` for all servers. Parameters are passed to the `domain.sh` script.  
 
 Example:
 
