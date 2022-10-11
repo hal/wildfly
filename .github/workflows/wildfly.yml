@@ -1,0 +1,28 @@
+name: Build Latest WildFly
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MVN: ./mvnw --show-version --batch-mode -Dcheckstyle.skip  -Denforcer.skip  -Dfindbugs.skip -Dformatter.skip -Dgmaven.execute.skip -Dimpsort.skip -Dlicense.skip -Dmaven.javadoc.skip -Dpmd.skip -DskipITs -DskipTests
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          - repository: wildfly/wildfly
+          - path: wildfly
+      - name: Set up JDK
+        id: setup-jdk
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build
+        id: build
+        run: |
+          cd wildfly
+          $MVN install
