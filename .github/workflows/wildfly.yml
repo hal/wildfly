@@ -12,8 +12,8 @@ jobs:
         id: checkout
         uses: actions/checkout@v3
         with:
-          - repository: wildfly/wildfly
-          - path: wildfly
+          repository: wildfly/wildfly
+          path: wildfly
       - name: Set up JDK
         id: setup-jdk
         uses: actions/setup-java@v3
